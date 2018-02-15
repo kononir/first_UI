@@ -9,9 +9,10 @@ import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
+import javafx.scene.*;
 //import javafx.scene.control.Button;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.collections.*;
@@ -39,12 +40,11 @@ public class UserInterface extends Application {
         );
         comboBox.setItems(listForComboBox);
         comboBox.getSelectionModel().select(0);
-        GridPane.setConstraints(comboBox, 0, 1);
+        //GridPane.setConstraints(comboBox, 0, 1);
         
-        /*--------делаем текстовое поле для ввода----------------------------*/
+        /*--------делаем текстовое поле первой группы для ввода--------------*/
         TextField firstTextField = new TextField();
-        GridPane.setConstraints(firstTextField, 0, 0);
-        //firstTextField.;
+        //GridPane.setConstraints(firstTextField, 0, 0);
         
         /*--------делаем кнопку для копирования текста в ComboBox------------*/
         Button button1 = new Button();
@@ -54,28 +54,44 @@ public class UserInterface extends Application {
             @Override
             public void handle(ActionEvent event) {
                 String newItem = firstTextField.getText();
+                String prevItem = null;
                 int numOfItem = 0;
-                while(comboBox.getValue() != null){
+                if(newItem.equals(""))
+                    return;
+                while(comboBox.getValue() != null){ //пересмотреть условие
                     comboBox.getSelectionModel().select(numOfItem);
-                    if(comboBox.getValue() == null){
+                    if(comboBox.getValue().equals(prevItem) ){   
                        comboBox.getItems().add(newItem);
                        break;
                     }
-                    if(comboBox.getValue() == newItem){
+                    //сравнение с помощью == не катит
+                    if(comboBox.getValue().equals(newItem)){
                         //!!!!!!!!!!!!!!!!!!!!!!!!вывод сообщщения об ошибке!!!!!!!!!!!!!!!!!!!!!!!!!
+                        Alert firstAlert = new Alert(AlertType.ERROR);
+                        firstAlert.setTitle("Error alert");
+                        firstAlert.setHeaderText("ERROR! You can't add already existing element!"); 
+                        firstAlert.showAndWait();
                         break;
                     }
+                    prevItem = comboBox.getValue();
                     numOfItem++;
                 }
-                
-                //System.out.println("Hello World!");
+                comboBox.getSelectionModel().select(numOfItem);
             }
         });
-        GridPane.setConstraints(button1, 1, 0);
+        //GridPane.setConstraints(button1, 1, 0);
         
-
+        Group firstGroup = new Group();
+        HBox firstHBox = new HBox();
+        firstHBox.setSpacing(3);
+        firstHBox.setPadding(new Insets(5));
+        firstHBox.getChildren().addAll(firstTextField, button1, comboBox);
+        firstGroup.getChildren().addAll(firstHBox);
+        GridPane.setConstraints(firstGroup, 0, 0);
         
-        root.getChildren().addAll(comboBox, button1, firstTextField);
+        
+        
+        root.getChildren().addAll(firstGroup);
         
         Scene scene = new Scene(root, 300, 250); //стандарт 300 на 250
         
