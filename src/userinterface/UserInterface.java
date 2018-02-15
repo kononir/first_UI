@@ -40,16 +40,14 @@ public class UserInterface extends Application {
         );
         comboBox.setItems(listForComboBox);
         comboBox.getSelectionModel().select(0);
-        //GridPane.setConstraints(comboBox, 0, 1);
         
         /*--------делаем текстовое поле первой группы для ввода--------------*/
         TextField firstTextField = new TextField();
-        //GridPane.setConstraints(firstTextField, 0, 0);
         
         /*--------делаем кнопку для копирования текста в ComboBox------------*/
-        Button button1 = new Button();
-        button1.setText("Edit Button");
-        button1.setOnAction(new EventHandler<ActionEvent>() {
+        Button firstButton = new Button();
+        firstButton.setText("First edit button");
+        firstButton.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
@@ -66,7 +64,6 @@ public class UserInterface extends Application {
                     }
                     //сравнение с помощью == не катит
                     if(comboBox.getValue().equals(newItem)){
-                        //!!!!!!!!!!!!!!!!!!!!!!!!вывод сообщщения об ошибке!!!!!!!!!!!!!!!!!!!!!!!!!
                         Alert firstAlert = new Alert(AlertType.ERROR);
                         firstAlert.setTitle("Error alert");
                         firstAlert.setHeaderText("ERROR! You can't add already existing element!"); 
@@ -79,19 +76,62 @@ public class UserInterface extends Application {
                 comboBox.getSelectionModel().select(numOfItem);
             }
         });
-        //GridPane.setConstraints(button1, 1, 0);
-        
+
+        /*--------делаем первую группу---------------------------------------*/        
         Group firstGroup = new Group();
         HBox firstHBox = new HBox();
         firstHBox.setSpacing(3);
         firstHBox.setPadding(new Insets(5));
-        firstHBox.getChildren().addAll(firstTextField, button1, comboBox);
+        firstHBox.getChildren().addAll(firstTextField, firstButton, comboBox);
         firstGroup.getChildren().addAll(firstHBox);
         GridPane.setConstraints(firstGroup, 0, 0);
         
+        /*--------делаем текстовое поле второй группы для ввода--------------*/
+        TextField secondTextField = new TextField();
+        
+        /*--------делаем кнопку второй группы для взаимозамены текста на обеих кнопках этой группы--------------*/
+        Button secondButtonForExchange = new Button();
+        secondButtonForExchange.setText("Second exchange button");
+        
+        /*--------делаем кнопку второй группы для изменение текста на другой кнопке этой группы--------------*/
+        Button secondButtonForEdit = new Button();
+        secondButtonForEdit.setText("Second edit button");
+        secondButtonForEdit.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event){
+                String newText = secondTextField.getText();
+                secondButtonForExchange.setText(newText);
+            }
+        });
+        
+        /*--------пишем обработчик событий для кнопки взаимозамены-----------*/
+        secondButtonForExchange.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event){
+                String newTextButtonForEdit = secondButtonForEdit.getText();
+                String newTextButtonForExchange = secondButtonForExchange.getText();
+                secondButtonForEdit.setText(newTextButtonForExchange);
+                secondButtonForExchange.setText(newTextButtonForEdit);
+            }
+        });
+        
+        /*--------делаем вторую группу---------------------------------------*/
+        Group secondGroup = new Group();
+        HBox secondHBox = new HBox();
+        secondHBox.setSpacing(3);
+        secondHBox.setPadding(new Insets(5));
+        secondHBox.getChildren().addAll(secondTextField, secondButtonForEdit,
+                                        secondButtonForExchange);
+        secondGroup.getChildren().setAll(secondHBox);
+        GridPane.setConstraints(secondGroup, 0, 1);
         
         
-        root.getChildren().addAll(firstGroup);
+        
+        
+        
+        root.getChildren().addAll(firstGroup, secondGroup);
         
         Scene scene = new Scene(root, 300, 250); //стандарт 300 на 250
         
