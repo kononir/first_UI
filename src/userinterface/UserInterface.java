@@ -65,7 +65,7 @@ public class UserInterface extends Application {
                     //сравнение с помощью == не катит
                     if(comboBox.getValue().equals(newItem)){
                         Alert firstAlert = new Alert(AlertType.ERROR);
-                        firstAlert.setTitle("Error alert");
+                        firstAlert.setTitle("Exist element");
                         firstAlert.setHeaderText("ERROR! You can't add already existing element!"); 
                         firstAlert.showAndWait();
                         break;
@@ -83,7 +83,7 @@ public class UserInterface extends Application {
         firstHBox.setSpacing(3);
         firstHBox.setPadding(new Insets(5));
         firstHBox.getChildren().addAll(firstTextField, firstButton, comboBox);
-        firstGroup.getChildren().addAll(firstHBox);
+        firstGroup.getChildren().add(firstHBox);
         GridPane.setConstraints(firstGroup, 0, 0);
         
         /*--------делаем текстовое поле второй группы для ввода--------------*/
@@ -124,16 +124,63 @@ public class UserInterface extends Application {
         secondHBox.setPadding(new Insets(5));
         secondHBox.getChildren().addAll(secondTextField, secondButtonForEdit,
                                         secondButtonForExchange);
-        secondGroup.getChildren().setAll(secondHBox);
+        secondGroup.getChildren().add(secondHBox);
         GridPane.setConstraints(secondGroup, 0, 1);
         
+        /*--------делаем текстовое поле третьей группы для ввода-------------*/
+        TextField thirdTextField = new TextField();
+        
+        /*--------делаем элементы выбора типа RadioButton-------------------------*/
+        ToggleGroup groupOfRadioButtons = new ToggleGroup();
+        RadioButton thirdRadioButton1 = new RadioButton("He");
+        RadioButton thirdRadioButton2 = new RadioButton("She");
+        RadioButton thirdRadioButton3 = new RadioButton("It");
+        thirdRadioButton1.setToggleGroup(groupOfRadioButtons);
+        thirdRadioButton2.setToggleGroup(groupOfRadioButtons);
+        thirdRadioButton3.setToggleGroup(groupOfRadioButtons);
+        
+        /*--------делаем кнопку третьей группы-------------------------------*/
+        Button thirdButton = new Button();
+        thirdButton.setText("Third switch button");
+        thirdButton.setOnAction(new EventHandler<ActionEvent>() {
+        
+            @Override
+            public void handle(ActionEvent action){
+                String textInTextField = thirdTextField.getText();
+                if((thirdRadioButton1.getText()).equals(textInTextField)){
+                    thirdRadioButton1.setSelected(true);
+                }
+                else if((thirdRadioButton2.getText()).equals(textInTextField)){
+                    thirdRadioButton2.setSelected(true);
+                }
+                else if((thirdRadioButton3.getText()).equals(textInTextField)){
+                    thirdRadioButton3.setSelected(true);
+                }
+                else{
+                    Alert thirdAlert = new Alert(AlertType.ERROR);
+                    thirdAlert.setTitle("Wrong name");
+                    thirdAlert.setHeaderText("ERROR! There are no item with such name!");
+                    thirdAlert.showAndWait();
+                }
+            }
+        });
+        
+        /*--------делаем третью группу---------------------------------------*/
+        Group thirdGroup = new Group();
+        VBox thirdVBox = new VBox();
+        thirdVBox.setSpacing(3);
+        thirdVBox.setPadding(new Insets(5));
+        thirdVBox.getChildren().addAll(thirdTextField, thirdRadioButton1, 
+                                       thirdRadioButton2, thirdRadioButton3,
+                                       thirdButton);
+        thirdGroup.getChildren().add(thirdVBox);
+        GridPane.setConstraints(thirdGroup, 0, 2);
         
         
         
+        root.getChildren().addAll(firstGroup, secondGroup, thirdGroup);
         
-        root.getChildren().addAll(firstGroup, secondGroup);
-        
-        Scene scene = new Scene(root, 300, 250); //стандарт 300 на 250
+        Scene scene = new Scene(root, 500, 400); //стандарт 300 на 250
         
         primaryStage.setTitle("User Interface");
         primaryStage.setScene(scene);
