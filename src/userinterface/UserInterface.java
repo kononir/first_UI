@@ -46,35 +46,30 @@ public class UserInterface extends Application {
         
         /*--------делаем кнопку для копирования текста в ComboBox------------*/
         Button firstButton = new Button();
-        firstButton.setText("First edit button");
-        firstButton.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                String newItem = firstTextField.getText();
-                String prevItem = null;
-                int numOfItem = 0;
-                if(newItem.equals(""))
-                    return;
-                while(comboBox.getValue() != null){ //пересмотреть условие
-                    comboBox.getSelectionModel().select(numOfItem);
-                    if(comboBox.getValue().equals(prevItem) ){   
-                       comboBox.getItems().add(newItem);
-                       break;
-                    }
-                    //сравнение с помощью == не катит
-                    if(comboBox.getValue().equals(newItem)){
-                        Alert firstAlert = new Alert(AlertType.ERROR);
-                        firstAlert.setTitle("Exist element");
-                        firstAlert.setHeaderText("ERROR! You can't add already existing element!"); 
-                        firstAlert.showAndWait();
-                        break;
-                    }
-                    prevItem = comboBox.getValue();
-                    numOfItem++;
-                }
+        firstButton.setText("New element");
+        firstButton.setOnAction(event -> {
+            String newItem = firstTextField.getText();
+            String prevItem = null;
+            int numOfItem = 0;
+            if(newItem.equals(""))
+                return;
+            while(comboBox.getValue() != null){ //пересмотреть условие
                 comboBox.getSelectionModel().select(numOfItem);
+                if(comboBox.getValue().equals(prevItem) ){   
+                    comboBox.getItems().add(newItem);
+                    break;
+                }
+                if(comboBox.getValue().equals(newItem)){
+                    Alert firstAlert = new Alert(AlertType.ERROR);
+                    firstAlert.setTitle("Exist element");
+                    firstAlert.setHeaderText("ERROR! You can't add already existing element!"); 
+                    firstAlert.showAndWait();
+                    break;
+                }
+                prevItem = comboBox.getValue();
+                numOfItem++;
             }
+            comboBox.getSelectionModel().select(numOfItem);
         });
 
         /*--------делаем первую группу---------------------------------------*/        
@@ -91,30 +86,22 @@ public class UserInterface extends Application {
         
         /*--------делаем кнопку второй группы для взаимозамены текста на обеих кнопках этой группы--------------*/
         Button secondButtonForExchange = new Button();
-        secondButtonForExchange.setText("Second exchange button");
+        secondButtonForExchange.setText("Exchange texts");
         
         /*--------делаем кнопку второй группы для изменение текста на другой кнопке этой группы--------------*/
         Button secondButtonForEdit = new Button();
-        secondButtonForEdit.setText("Second edit button");
-        secondButtonForEdit.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event){
-                String newText = secondTextField.getText();
-                secondButtonForExchange.setText(newText);
-            }
+        secondButtonForEdit.setText("Change text");
+        secondButtonForEdit.setOnAction(action -> {
+            String newText = secondTextField.getText();
+            secondButtonForExchange.setText(newText);
         });
         
         /*--------пишем обработчик событий для кнопки взаимозамены-----------*/
-        secondButtonForExchange.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event){
+        secondButtonForExchange.setOnAction(action -> {
                 String newTextButtonForEdit = secondButtonForEdit.getText();
                 String newTextButtonForExchange = secondButtonForExchange.getText();
                 secondButtonForEdit.setText(newTextButtonForExchange);
                 secondButtonForExchange.setText(newTextButtonForEdit);
-            }
         });
         
         /*--------делаем вторую группу---------------------------------------*/
@@ -130,7 +117,7 @@ public class UserInterface extends Application {
         /*--------делаем текстовое поле третьей группы для ввода-------------*/
         TextField thirdTextField = new TextField();
         
-        /*--------делаем элементы выбора типа RadioButton-------------------------*/
+        /*--------делаем элементы выбора типа RadioButton--------------------*/
         ToggleGroup groupOfRadioButtons = new ToggleGroup();
         RadioButton thirdRadioButton1 = new RadioButton("He");
         RadioButton thirdRadioButton2 = new RadioButton("She");
@@ -141,27 +128,23 @@ public class UserInterface extends Application {
         
         /*--------делаем кнопку третьей группы-------------------------------*/
         Button thirdButton = new Button();
-        thirdButton.setText("Third switch button");
-        thirdButton.setOnAction(new EventHandler<ActionEvent>() {
-        
-            @Override
-            public void handle(ActionEvent action){
-                String textInTextField = thirdTextField.getText();
-                if((thirdRadioButton1.getText()).equals(textInTextField)){
-                    thirdRadioButton1.setSelected(true);
-                }
-                else if((thirdRadioButton2.getText()).equals(textInTextField)){
-                    thirdRadioButton2.setSelected(true);
-                }
-                else if((thirdRadioButton3.getText()).equals(textInTextField)){
-                    thirdRadioButton3.setSelected(true);
-                }
-                else{
-                    Alert thirdAlert = new Alert(AlertType.ERROR);
-                    thirdAlert.setTitle("Wrong name");
-                    thirdAlert.setHeaderText("ERROR! There are no item with such name!");
-                    thirdAlert.showAndWait();
-                }
+        thirdButton.setText("Tick element");
+        thirdButton.setOnAction(action -> {
+            String textInTextField = thirdTextField.getText();
+            if(thirdRadioButton1.getText().equals(textInTextField)){
+                thirdRadioButton1.setSelected(true);
+            }
+            else if(thirdRadioButton2.getText().equals(textInTextField)){
+                thirdRadioButton2.setSelected(true);
+            }
+            else if(thirdRadioButton3.getText().equals(textInTextField)){
+                thirdRadioButton3.setSelected(true);
+            }
+            else{
+                Alert thirdAlert = new Alert(AlertType.ERROR);
+                thirdAlert.setTitle("Wrong name");
+                thirdAlert.setHeaderText("ERROR! There are no item with such name!");
+                thirdAlert.showAndWait();
             }
         });
         
@@ -176,9 +159,55 @@ public class UserInterface extends Application {
         thirdGroup.getChildren().add(thirdVBox);
         GridPane.setConstraints(thirdGroup, 0, 2);
         
+        /*--------делаем текстовое поле четвёртой группы для ввода-----------*/
+        TextField fourthTextField = new TextField();
         
+        /*--------делаем элементы выбора типа CheckBox-----------------------*/
+        CheckBox[] arrayOfCheckBoxes = new CheckBox[]{
+                new CheckBox("English"),
+                new CheckBox("Math"),
+                new CheckBox("Physics")
+        };
         
-        root.getChildren().addAll(firstGroup, secondGroup, thirdGroup);
+        /*--------делаем кнопку четвёртой группы-----------------------------*/
+        Button fourthButton = new Button();
+        fourthButton.setText("Tick element");
+        fourthButton.setOnAction(event->{
+            String textInTextField = fourthTextField.getText();
+            boolean elementExist = false;
+            for(int numberOfCheckBox = 0; numberOfCheckBox < 3; numberOfCheckBox++){
+                CheckBox currentCheckBox = arrayOfCheckBoxes[numberOfCheckBox];
+                if(currentCheckBox.getText().equals(textInTextField)){
+                    elementExist = true;
+                    if(currentCheckBox.isSelected())
+                        currentCheckBox.setSelected(false);
+                    else
+                        currentCheckBox.setSelected(true);
+                }
+            }
+            if(!elementExist){
+                Alert fourthAlert = new Alert(AlertType.ERROR);
+                fourthAlert.setTitle("Wrong name");
+                fourthAlert.setHeaderText("ERROR! There are no item with such name!");
+                fourthAlert.showAndWait();
+            }
+        });
+        
+        /*--------делаем четвёртую группу------------------------------------*/
+        Group fourthGroup = new Group();
+        VBox fourthVBox = new VBox();
+        fourthVBox.setSpacing(3);
+        fourthVBox.setPadding(new Insets(5));
+        fourthVBox.getChildren().add(fourthTextField);
+        for(int numberOfCheckBox = 0; numberOfCheckBox < 3; numberOfCheckBox++){
+            CheckBox currentCheckBox = arrayOfCheckBoxes[numberOfCheckBox];
+            fourthVBox.getChildren().add(currentCheckBox);
+        }
+        fourthVBox.getChildren().add(fourthButton);
+        fourthGroup.getChildren().add(fourthVBox);
+        GridPane.setConstraints(fourthGroup, 0, 3);
+        
+        root.getChildren().addAll(firstGroup, secondGroup, thirdGroup, fourthGroup);
         
         Scene scene = new Scene(root, 500, 400); //стандарт 300 на 250
         
