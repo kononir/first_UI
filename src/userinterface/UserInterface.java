@@ -207,6 +207,20 @@ public class UserInterface extends Application {
         fourthGroup.getChildren().add(fourthVBox);
         GridPane.setConstraints(fourthGroup, 0, 3);
         
+        /*---------делаем текстовое поле пятой группы------------------------*/
+        TextField fifthTextField = new TextField();
+        
+        /*---------делаем элементы таблицы-----------------------------------*/
+        TableView table = new TableView();
+        table.setEditable(true); //нужно ли???????
+        TableColumn column1 = new TableColumn();
+        TableColumn column2 = new TableColumn();
+        column1.setText("First column");
+        column2.setText("Second column");
+        table.getColumns().addAll(column1, column2);
+        //GridPane.set
+        //root.set
+        
         root.getChildren().addAll(firstGroup, secondGroup, thirdGroup, fourthGroup);
         
         Scene scene = new Scene(root, 500, 400); //стандарт 300 на 250
