@@ -28,10 +28,8 @@ public class UserInterface extends Application {
 
         
         /*--------делаем панель, разделённую на столбцы и строки-------------*/
-        GridPane root = new GridPane();
+        BorderPane root = new BorderPane();
         root.setPadding(new Insets(10,10,10,10));
-        root.setHgap(5);
-        root.setVgap(5);
         
         /*--------делаем выпадающий список-----------------------------------*/
         ComboBox<String> comboBox = new ComboBox<String>();
@@ -79,7 +77,8 @@ public class UserInterface extends Application {
         firstHBox.setPadding(new Insets(5));
         firstHBox.getChildren().addAll(firstTextField, firstButton, comboBox);
         firstGroup.getChildren().add(firstHBox);
-        GridPane.setConstraints(firstGroup, 0, 0);
+        root.setTop(firstGroup);
+        BorderPane.setAlignment(firstGroup, Pos.TOP_CENTER);
         
         /*--------делаем текстовое поле второй группы для ввода--------------*/
         TextField secondTextField = new TextField();
@@ -112,7 +111,8 @@ public class UserInterface extends Application {
         secondHBox.getChildren().addAll(secondTextField, secondButtonForEdit,
                                         secondButtonForExchange);
         secondGroup.getChildren().add(secondHBox);
-        GridPane.setConstraints(secondGroup, 0, 1);
+        root.setBottom(secondGroup);
+        BorderPane.setAlignment(secondGroup, Pos.BOTTOM_CENTER);
         
         /*--------делаем текстовое поле третьей группы для ввода-------------*/
         TextField thirdTextField = new TextField();
@@ -157,7 +157,8 @@ public class UserInterface extends Application {
                                        thirdRadioButton2, thirdRadioButton3,
                                        thirdButton);
         thirdGroup.getChildren().add(thirdVBox);
-        GridPane.setConstraints(thirdGroup, 0, 2);
+        root.setLeft(thirdGroup);
+        BorderPane.setAlignment(thirdGroup, Pos.CENTER_LEFT);
         
         /*--------делаем текстовое поле четвёртой группы для ввода-----------*/
         TextField fourthTextField = new TextField();
@@ -205,7 +206,8 @@ public class UserInterface extends Application {
         }
         fourthVBox.getChildren().add(fourthButton);
         fourthGroup.getChildren().add(fourthVBox);
-        GridPane.setConstraints(fourthGroup, 0, 3);
+        root.setRight(fourthGroup);
+        BorderPane.setAlignment(fourthGroup, Pos.CENTER_RIGHT);
         
         /*---------делаем текстовое поле пятой группы------------------------*/
         TextField fifthTextField = new TextField();
@@ -218,10 +220,8 @@ public class UserInterface extends Application {
         column1.setText("First column");
         column2.setText("Second column");
         table.getColumns().addAll(column1, column2);
-        //GridPane.set
-        //root.set
         
-        root.getChildren().addAll(firstGroup, secondGroup, thirdGroup, fourthGroup);
+       // root.getChildren().addAll(firstGroup, secondGroup, thirdGroup, fourthGroup);
         
         Scene scene = new Scene(root, 500, 400); //стандарт 300 на 250
         
