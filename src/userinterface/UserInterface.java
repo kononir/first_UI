@@ -13,6 +13,7 @@ import javafx.scene.*;
 //import javafx.scene.control.Button;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
+import javafx.scene.control.cell.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.collections.*;
@@ -213,17 +214,72 @@ public class UserInterface extends Application {
         TextField fifthTextField = new TextField();
         
         /*---------делаем элементы таблицы-----------------------------------*/
-        TableView table = new TableView();
+        TableView<TableClass> table = new TableView<TableClass>();
         table.setEditable(true); //нужно ли???????
         TableColumn column1 = new TableColumn();
         TableColumn column2 = new TableColumn();
         column1.setText("First column");
         column2.setText("Second column");
+        column1.setMinWidth(200);
+        column2.setMinWidth(200);
+        column1.setCellValueFactory(
+                new PropertyValueFactory<TableClass, String>("firstColumn")
+        );
+        column2.setCellValueFactory(
+                new PropertyValueFactory<TableClass, String>("secondColumn")
+        );
         table.getColumns().addAll(column1, column2);
+        ObservableList<TableClass> listForTable = FXCollections.observableArrayList();
+        table.setItems(listForTable);
+        root.setCenter(table);
+        BorderPane.setAlignment(table, Pos.CENTER);
         
-       // root.getChildren().addAll(firstGroup, secondGroup, thirdGroup, fourthGroup);
+        /*---------делаем кнопку добавления в таблицу------------------------*/
+        Button fifthButtonToAdd = new Button();
+        fifthButtonToAdd.setText("Add new");
+        fifthButtonToAdd.setOnAction(event -> {
+            String textInTextField = fifthTextField.getText();
+            TableClass newTableLine = new TableClass(textInTextField, "");
+            listForTable.add(newTableLine);
+        });
         
-        Scene scene = new Scene(root, 500, 400); //стандарт 300 на 250
+        /*---------делаем кнопку перемещения во второй столбец---------------*/
+        Button fifthButtonToMove1 = new Button();
+        fifthButtonToMove1.setText("Move to second");
+        fifthButtonToMove1.setOnAction(event -> {
+            int numberOfLines = listForTable.size();
+            TableClass lastLineOfTable = listForTable.get(numberOfLines - 1);
+            String textInFirstColumn = lastLineOfTable.getFirstColumn();
+            listForTable.remove(numberOfLines - 1);
+            TableClass newLineOfTable = new TableClass("", textInFirstColumn);
+            listForTable.add(newLineOfTable);
+        });
+        
+        /*---------делаем кнопку перемещения в первый столбец----------------*/
+        Button fifthButtonToMove2 = new Button();
+        fifthButtonToMove2.setText("Move to first");
+        fifthButtonToMove2.setOnAction(event -> {
+            int numberOfLines = listForTable.size();
+            TableClass lastLineOfTable = listForTable.get(numberOfLines - 1);
+            String textInSecondColumn = lastLineOfTable.getSecondColumn();
+            listForTable.remove(numberOfLines - 1);
+            TableClass newLineOfTable = new TableClass(textInSecondColumn, "");
+            listForTable.add(newLineOfTable);
+        });
+        
+        /*---------делаем пятую группу---------------------------------------*/
+        Group fifthGroup = new Group();
+        VBox fifthVBox = new VBox();
+        HBox fifthHBox = new HBox();
+        fifthHBox.getChildren().addAll(fifthTextField, fifthButtonToAdd,
+                                       fifthButtonToMove1, fifthButtonToMove2);
+        fifthVBox.getChildren().addAll(fifthHBox, table);
+        fifthGroup.getChildren().addAll(fifthVBox);
+        root.setCenter(fifthGroup);
+        BorderPane.setAlignment(fifthGroup, Pos.CENTER);
+                
+        
+        Scene scene = new Scene(root, 800, 640); //стандарт 300 на 250(500*400; )
         
         primaryStage.setTitle("User Interface");
         primaryStage.setScene(scene);
