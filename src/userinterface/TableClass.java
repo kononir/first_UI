@@ -16,16 +16,16 @@ public class TableClass {
         this.firstColumn = Column1;
         this.secondColumn = Column2;
     }
-    public void setFirstColumn(String Column1){
+    public final void setFirstColumn(String Column1){
         this.firstColumn = Column1;
     }
-    public void setSecondColumn(String Column2){
+    public final void setSecondColumn(String Column2){
         this.secondColumn = Column2;
     }
-    public String getFirstColumn(){
+    public final String getFirstColumn(){
         return this.firstColumn;
     }
-    public String getSecondColumn(){
+    public final String getSecondColumn(){
         return this.secondColumn;
     }
 }
