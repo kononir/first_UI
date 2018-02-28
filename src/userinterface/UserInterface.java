@@ -6,6 +6,7 @@
 package userinterface;
 
 import javafx.application.Application;
+import javafx.animation.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -18,12 +19,14 @@ import javafx.collections.*;
 /**
  *
  * @author Vlad
- * бегущая строка
+ * бегущая строка +
  * удалить комментарии +
  * пофиксить пропадание в таблице +
  * сделать if else в одну строку +
  */
 public class UserInterface extends Application {
+    
+    final private String startTitle = "User Interface";
     
     @Override
     public void start(Stage primaryStage) {
@@ -261,18 +264,48 @@ public class UserInterface extends Application {
         root.setCenter(fifthGroup);
         BorderPane.setAlignment(fifthGroup, Pos.CENTER);
                 
-        //Scene scene = new Scene(root, 800, 640);
         Scene scene = new Scene(root);
         
-        String title = "User Interface";
-        for(int iter = 0; iter < 93; iter++)
-            title += "1";
-        primaryStage.setTitle(title);
+        primaryStage.setTitle(startTitle);
+        new AnimationTimer(){
+            private long lastUpdate = 0;
+            @Override
+            public void handle(long now){
+                if(now - lastUpdate >= 28000000){ //28000000
+                    String curentTitle = primaryStage.getTitle();
+                    //boolean primaryStage.i
+                    String newTitle = getNewTitle(curentTitle);
+                    primaryStage.setTitle(newTitle);
+                    lastUpdate = now;
+                }
+            }
+        }.start();
+               
         primaryStage.setWidth(800);
         primaryStage.setHeight(640);
         System.out.println(scene.getWidth());
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    
+    public String getNewTitle(String curentTitle){
+        String newTitle;
+        String cutStartTitle = startTitle.substring(1);
+        int startTitleLength = startTitle.length();
+        int curentTitleLength = curentTitle.length();
+        if(curentTitleLength >= 189){
+            String cutCurentTitleForCheck = curentTitle.substring(0, startTitleLength-2);
+            if(cutCurentTitleForCheck.equals(cutStartTitle))
+                newTitle = startTitle;
+            else{
+                char lastSymbol = curentTitle.charAt(curentTitleLength - 1);
+                String cutCurentTitleForNew = curentTitle.substring(0, curentTitleLength - 1);
+                newTitle = lastSymbol + cutCurentTitleForNew;
+            }
+        }
+        else
+            newTitle = " " + curentTitle;
+        return newTitle;
     }
 
     /**
