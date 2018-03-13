@@ -19,14 +19,9 @@ import javafx.collections.*;
 /**
  *
  * @author Vlad
- * бегущая строка +
- * удалить комментарии +
- * пофиксить пропадание в таблице +
- * сделать if else в одну строку +
+ * 
  */
 public class UserInterface extends Application {
-    
-    final private String startTitle = "User Interface";
     
     @Override
     public void start(Stage primaryStage) {
@@ -265,15 +260,32 @@ public class UserInterface extends Application {
         BorderPane.setAlignment(fifthGroup, Pos.CENTER);
                 
         Scene scene = new Scene(root);
+        primaryStage.setWidth(800);
+        primaryStage.setHeight(640);
         
+        final String textInTitle = "User Interface";
+        final int startWidth = (int)primaryStage.getWidth(); 
+        final int widthOfButtons = 250;
+        final double widthOfLetter = 2.9;
+        final int startNumberOfSpaces = (int)((double)(startWidth - widthOfButtons)/widthOfLetter - (double)textInTitle.length());
+        final String startTitle = addSpacesToString(textInTitle, startNumberOfSpaces);
         primaryStage.setTitle(startTitle);
+        
         new AnimationTimer(){
             private long lastUpdate = 0;
+            final private long timeDelay = 17000000;
+            private int width = startWidth;
+            private int numberOfSpaces = startNumberOfSpaces;
             @Override
             public void handle(long now){
-                if(now - lastUpdate >= 28000000){ //28000000
+                if(now - lastUpdate >= timeDelay){
                     String curentTitle = primaryStage.getTitle();
-                    //boolean primaryStage.i
+                    int curentWidth = (int)primaryStage.getWidth();
+                    if(curentWidth != width){
+                        numberOfSpaces = (int)((double)(curentWidth - widthOfButtons)/widthOfLetter - (double)textInTitle.length());
+                        width = curentWidth;
+                        curentTitle = addSpacesToString(textInTitle, numberOfSpaces);
+                    }
                     String newTitle = getNewTitle(curentTitle);
                     primaryStage.setTitle(newTitle);
                     lastUpdate = now;
@@ -281,31 +293,26 @@ public class UserInterface extends Application {
             }
         }.start();
                
-        primaryStage.setWidth(800);
-        primaryStage.setHeight(640);
-        System.out.println(scene.getWidth());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
     
     public String getNewTitle(String curentTitle){
-        String newTitle;
-        String cutStartTitle = startTitle.substring(1);
-        int startTitleLength = startTitle.length();
         int curentTitleLength = curentTitle.length();
-        if(curentTitleLength >= 189){
-            String cutCurentTitleForCheck = curentTitle.substring(0, startTitleLength-2);
-            if(cutCurentTitleForCheck.equals(cutStartTitle))
-                newTitle = startTitle;
-            else{
-                char lastSymbol = curentTitle.charAt(curentTitleLength - 1);
-                String cutCurentTitleForNew = curentTitle.substring(0, curentTitleLength - 1);
-                newTitle = lastSymbol + cutCurentTitleForNew;
-            }
+        char lastSymbol = curentTitle.charAt(curentTitleLength - 1);
+        String cutCurentTitleForNew = curentTitle.substring(0, curentTitleLength - 1);
+        StringBuilder newTitle = new StringBuilder();
+        newTitle.append(lastSymbol).append(cutCurentTitleForNew);
+        return newTitle.toString();
+    }
+    
+    public String addSpacesToString(String oldTitle, int numberOfSpaces){
+        StringBuilder newTitle = new StringBuilder();
+        newTitle.append(oldTitle);
+        for(int iter = 0; iter < numberOfSpaces; iter++){
+            newTitle.append(' ');
         }
-        else
-            newTitle = " " + curentTitle;
-        return newTitle;
+        return newTitle.toString();
     }
 
     /**
